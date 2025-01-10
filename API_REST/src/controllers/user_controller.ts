@@ -18,3 +18,24 @@ export async function logIn(req:Request,res:Response):Promise<Response> {
     }
 }
 
+export async function updateUser(req: Request, res: Response): Promise<Response> {
+    try {
+        const { id } = req.params;  // ID del usuario a modificar
+        const updatedData = req.body;  // Datos actualizados
+
+        const updatedUser = await userServices.getEntries.update(id, updatedData);
+
+        if (updatedUser) {
+            console.log(updatedUser);
+            return res.status(200).json({ message: 'Usuario actualizado', user: updatedUser });
+            
+        } else {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+    } catch (error) {
+        console.error('Error al actualizar usuario:', error);
+        return res.status(500).json({ message: 'Error al actualizar el usuario' });
+    }
+   
+}
+

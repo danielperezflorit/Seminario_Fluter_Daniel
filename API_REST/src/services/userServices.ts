@@ -2,6 +2,7 @@ import { Types } from 'mongoose';
 import { usersInterface, usersofDB } from '../modelos/types_d_users'
 //import userData from './users.json'
 
+
 export const getEntries = {
     getAll: async()=>{
     return await usersofDB.find();
@@ -29,12 +30,21 @@ export const getEntries = {
     create: async(entry:object)=>{
         return await usersofDB.create(entry);
     },
-    update: async(id:string,body:object)=>{
-        console.log(body);
-        return await usersofDB.findByIdAndUpdate(id,body,{$new:true});
+    
+    
+    update: async (id: string, body: object) => {
+        try {
+            return await usersofDB.findByIdAndUpdate(id, body, { new: true });
+        } catch (error) {
+            console.error('Error actualizando usuario:', error);
+            throw error;
+        }
     },
+
+    
     delete: async(id:string)=>{
         const objectId = new Types.ObjectId(id);
         return await usersofDB.findByIdAndDelete(objectId);
     }
 }
+
